@@ -10,4 +10,7 @@ export class UpdateUserInput {
 
     @Field()
     email: string;
+
+    @Field(() => [String])
+    roles: string[];
 }

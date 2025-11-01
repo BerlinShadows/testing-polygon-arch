@@ -3,15 +3,16 @@ export class User {
         public readonly id: string,
         public email: string,
         public name: string,
-        public role: string,
+        public roles: string[],
         public isActive: boolean = true,
         public readonly createdAt: Date = new Date(),
         public updatedAt: Date = new Date(),
     ) { }
 
-    updateProfile(name: string, email: string): void {
+    updateProfile(name: string, email: string, roles: string[]): void {
         this.name = name;
         this.email = email;
+        this.roles = roles;
         this.updatedAt = new Date();
     }
 

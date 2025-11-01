@@ -15,8 +15,8 @@ export class UserController {
     ) { }
 
     @Post()
-    async create(@Body() dto: { email: string; name: string; role: string }) {
-        return this.createUserUseCase.execute(dto.email, dto.name, dto.role);
+    async create(@Body() dto: { email: string; name: string; roles: string[] }) {
+        return this.createUserUseCase.execute(dto.email, dto.name, dto.roles);
     }
 
     @Get(':id')
@@ -27,10 +27,10 @@ export class UserController {
     @Put(':id')
     async update(
         @Param('id') id: string,
-        @Body() dto: { name: string; email: string },
+        @Body() dto: { name: string; email: string, roles: string[] },
     ) {
         try {
-            return await this.updateUserUseCase.execute(id, dto.name, dto.email);
+            return await this.updateUserUseCase.execute(id, dto.name, dto.email, dto.roles);
         } catch (e) {
             if (e.name === 'UserNotFoundError') throw new NotFoundException(e.message);
             throw new Error(e.message);

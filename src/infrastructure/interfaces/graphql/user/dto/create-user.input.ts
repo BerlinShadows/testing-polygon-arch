@@ -8,6 +8,6 @@ export class CreateUserInput {
     @Field()
     name: string;
 
-    @Field()
-    role: string;
+    @Field(() => [String])
+    roles: string[];
 }

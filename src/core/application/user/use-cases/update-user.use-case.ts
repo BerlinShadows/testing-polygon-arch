@@ -5,7 +5,7 @@ import { UserNotFoundError } from '../../../domain/user/user.errors';
 export class UpdateUserUseCase {
     constructor(private readonly userRepository: UserRepositoryPort) { }
 
-    async execute(id: string, name: string, email: string): Promise<User> {
+    async execute(id: string, name: string, email: string, roles: string[]): Promise<User> {
         const user = await this.userRepository.findById(id);
         if (!user) {
             throw new UserNotFoundError(id);
@@ -18,7 +18,7 @@ export class UpdateUserUseCase {
             }
         }
 
-        user.updateProfile(name, email);
+        user.updateProfile(name, email, roles);
         return this.userRepository.update(user);
     }
 }

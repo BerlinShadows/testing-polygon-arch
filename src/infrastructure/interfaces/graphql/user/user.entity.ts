@@ -11,8 +11,8 @@ export class User {
     @Field()
     name: string;
 
-    @Field()
-    role: string;
+    @Field(() => [String])
+    roles: string[];
 
     @Field()
     isActive: boolean;
