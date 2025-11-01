@@ -1,6 +1,7 @@
 import { plainToInstance } from 'class-transformer';
 import { validateSync, IsInt, IsString, IsEnum, IsIP } from 'class-validator';
-import * as types from '../../../core/common/types';
+
+import type { Environment } from 'src/core/common/types';
 
 class EnvVariables {
     @IsInt()
@@ -12,13 +13,13 @@ class EnvVariables {
 
     @IsString()
     @IsEnum(['development', 'production', 'test'])
-    NODE_ENV: types.Environment;
+    NODE_ENV: Environment;
 }
 
 export interface AppConfig {
     port: number;
     host: string;
-    env: types.Environment;
+    env: Environment;
     isDev: boolean;
     isProd: boolean;
 }
