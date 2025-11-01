@@ -2,6 +2,7 @@ import { User } from '../../../domain/user/user.entity';
 
 export abstract class UserRepositoryPort {
   abstract create(user: User): Promise<User>;
+  abstract findAll(): Promise<User[]>;
   abstract findById(id: string): Promise<User | null>;
   abstract findByEmail(email: string): Promise<User | null>;
   abstract update(user: User): Promise<User>;
