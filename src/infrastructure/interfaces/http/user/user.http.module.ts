@@ -4,7 +4,7 @@ import { UserUseCasesModule } from 'src/infrastructure/application/user/user-use
 import { UserController } from './user.controller';
 
 @Module({
-    controllers: [UserController],
-    imports: [UserUseCasesModule]
+  controllers: [UserController],
+  imports: [UserUseCasesModule],
 })
-export class UserHttpModule { }
+export class UserHttpModule {}

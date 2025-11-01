@@ -11,41 +11,56 @@ import { UpdateRoleInput } from './dto/update-role.input';
 
 @Resolver(() => Role)
 export class RoleResolver {
-    constructor(
-        private readonly createRoleUseCase: CreateRoleUseCase,
-        private readonly getRoleUseCase: GetRoleUseCase,
-        private readonly updateRoleUseCase: UpdateRoleUseCase,
-        private readonly deleteRoleUseCase: DeleteRoleUseCase,
-        private readonly listRolesUseCase: ListRolesUseCase,
-    ) { }
+  constructor(
+    private readonly createRoleUseCase: CreateRoleUseCase,
+    private readonly getRoleUseCase: GetRoleUseCase,
+    private readonly updateRoleUseCase: UpdateRoleUseCase,
+    private readonly deleteRoleUseCase: DeleteRoleUseCase,
+    private readonly listRolesUseCase: ListRolesUseCase,
+  ) {}
 
-    @Mutation(() => Role)
-    async createRole(@Args('input') input: CreateRoleInput): Promise<Role> {
-        const role = await this.createRoleUseCase.execute(input.name, input.description);
-        return role as Role;
-    }
+  @Mutation(() => Role)
+  async createRole(@Args('input') input: CreateRoleInput): Promise<Role> {
+    const role = await this.createRoleUseCase.execute(
+      input.name,
+      input.description,
+    );
+    return role as Role;
+  }
 
-    @Query(() => Role)
-    async role(@Args('id') id: string): Promise<Role> {
-        const role = await this.getRoleUseCase.execute(id);
-        return role as Role;
-    }
+  @Query(() => Role)
+  async role(@Args('id') id: string): Promise<Role> {
+    const role = await this.getRoleUseCase.execute(id);
+    return role as Role;
+  }
 
-    @Mutation(() => Role)
-    async updateRole(@Args('input') input: UpdateRoleInput): Promise<Role> {
-        const role = await this.updateRoleUseCase.execute(input.id, input.name, input.description);
-        return role as Role;
-    }
+  @Mutation(() => Role)
+  async updateRole(@Args('input') input: UpdateRoleInput): Promise<Role> {
+    const role = await this.updateRoleUseCase.execute(
+      input.id,
+      input.name,
+      input.description,
+    );
+    return role as Role;
+  }
 
-    @Mutation(() => Boolean)
-    async deleteRole(@Args('id') id: string): Promise<boolean> {
-        await this.deleteRoleUseCase.execute(id);
-        return true;
-    }
+  @Mutation(() => Boolean)
+  async deleteRole(@Args('id') id: string): Promise<boolean> {
+    await this.deleteRoleUseCase.execute(id);
+    return true;
+  }
 
-    @Query(() => [Role])
-    async roles(): Promise<Role[]> {
-        const roles = await this.listRolesUseCase.execute();
-        return roles as Role[];
+  @Query(() => [Role])
+  async roles(): Promise<Role[]> {
+    try {
+      const roles = await this.listRolesUseCase.execute();
+      if (!roles || !Array.isArray(roles)) {
+        throw new Error('Expected array of roles');
+      }
+      return roles as Role[];
+    } catch (error) {
+      console.error('Error in roles resolver:', error);
+      throw new Error(`Failed to fetch roles: ${error.message}`);
     }
+  }
 }

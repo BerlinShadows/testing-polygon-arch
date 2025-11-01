@@ -10,26 +10,24 @@ import { WebsocketModule } from 'src/infrastructure/interfaces/websocket/websock
 import { WebSocketNotificationChannel } from 'src/infrastructure/interfaces/websocket/websocket-notification.channel';
 
 @Module({
-    imports: [WebsocketModule],
-    providers: [
-        SendNotificationUseCase,
-        {
-            provide: NotificationRepositoryPort,
-            useClass: InMemoryNotificationRepository,
-        },
-        {
-            provide: 'NotificationChannels',
-            useFactory: (
-                wsChannel: WebSocketNotificationChannel,
-            ) => [
-                    new ConsoleNotificationChannel(),
-                    wsChannel,
-                ],
-            inject: [WebSocketNotificationChannel],
-        },
-        LogAuditEventUseCase,
-        LoggingService,
-    ],
-    exports: [SendNotificationUseCase],
+  imports: [WebsocketModule],
+  providers: [
+    SendNotificationUseCase,
+    {
+      provide: NotificationRepositoryPort,
+      useClass: InMemoryNotificationRepository,
+    },
+    {
+      provide: 'NotificationChannels',
+      useFactory: (wsChannel: WebSocketNotificationChannel) => [
+        new ConsoleNotificationChannel(),
+        wsChannel,
+      ],
+      inject: [WebSocketNotificationChannel],
+    },
+    LogAuditEventUseCase,
+    LoggingService,
+  ],
+  exports: [SendNotificationUseCase],
 })
-export class NotificationUseCasesModule { }
+export class NotificationUseCasesModule {}

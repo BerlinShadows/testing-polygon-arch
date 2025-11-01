@@ -19,4 +19,4 @@ import { ModelResolver } from './_model/model.resolver';
   controllers: [],
   providers: [ModelResolver],
 })
-export class AppModule { }
+export class AppModule {}

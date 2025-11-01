@@ -13,7 +13,7 @@
     "core:scenario:audit": "ts-node src/core/scenarios/audit.scenario.ts",
     "core:scenario:logging": "ts-node src/core/scenarios/logging.scenario.ts",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",

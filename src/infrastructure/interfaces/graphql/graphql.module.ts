@@ -8,11 +8,11 @@ import { RoleGraphQLModule } from './role/role.graphql.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: 'clean-schema.gql', 
+      autoSchemaFile: 'clean-schema.gql',
       sortSchema: true,
     }),
-    UserGraphQLModule,  
-    RoleGraphQLModule,  
+    UserGraphQLModule,
+    RoleGraphQLModule,
   ],
 })
 export class GraphqlModule {}

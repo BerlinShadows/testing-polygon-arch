@@ -11,11 +11,7 @@ export class CreateRoleUseCase {
             throw new RoleAlreadyExistsError(name);
         }
 
-        const role = new Role(
-            'role-' + Date.now(),
-            name,
-            description
-        );
+        const role = new Role('role-' + Date.now(), name, description);
 
         return this.roleRepository.create(role);
     }

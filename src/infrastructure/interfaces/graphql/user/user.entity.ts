@@ -2,24 +2,24 @@ import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class User {
-    @Field(() => ID)
-    id: string;
+  @Field(() => ID)
+  id: string;
 
-    @Field()
-    email: string;
+  @Field()
+  email: string;
 
-    @Field()
-    name: string;
+  @Field()
+  name: string;
 
-    @Field(() => [String])
-    roles: string[];
+  @Field(() => [String])
+  roles: string[];
 
-    @Field()
-    isActive: boolean;
+  @Field()
+  isActive: boolean;
 
-    @Field()
-    createdAt: Date;
+  @Field()
+  createdAt: Date;
 
-    @Field()
-    updatedAt: Date;
+  @Field()
+  updatedAt: Date;
 }

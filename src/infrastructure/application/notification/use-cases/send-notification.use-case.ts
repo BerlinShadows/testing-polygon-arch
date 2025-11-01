@@ -1,12 +1,15 @@
 import { NotificationRepositoryPort } from 'src/core/application/notification/ports/notification.repository.port';
 import { NotificationChannel } from 'src/core/domain/notification/notification-channel.interface';
-import { Notification, NotificationChannel as ChannelType } from 'src/core/domain/notification/notification.entity';
+import {
+  Notification,
+  NotificationChannel as ChannelType,
+} from 'src/core/domain/notification/notification.entity';
 
 export class SendNotificationUseCase {
   constructor(
     private readonly repository: NotificationRepositoryPort,
     private readonly channels: NotificationChannel[],
-  ) { }
+  ) {}
 
   async execute(
     userId: string,
@@ -26,7 +29,7 @@ export class SendNotificationUseCase {
 
     await this.repository.save(notification);
 
-    const channel = this.channels.find(c => c.type === channelType);
+    const channel = this.channels.find((c) => c.type === channelType);
     if (!channel) {
       throw new Error(`Channel ${channelType} not supported`);
     }

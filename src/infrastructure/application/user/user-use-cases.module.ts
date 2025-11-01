@@ -8,25 +8,23 @@ import { UpdateUserUseCase } from 'src/core/application/user/use-cases/update-us
 import { PgUserRepository } from 'src/infrastructure/persistence/postgres/pg-user.repository';
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 
-
-
 @Module({
-    imports: [DatabaseModule],
-    providers: [
-        CreateUserUseCase,
-        GetUserUseCase,
-        UpdateUserUseCase,
-        DeleteUserUseCase,
-        {
-            provide: UserRepositoryPort,
-            useClass: PgUserRepository,
-        },
-    ],
-    exports: [
-        CreateUserUseCase,
-        GetUserUseCase,
-        UpdateUserUseCase,
-        DeleteUserUseCase,
-    ],
+  imports: [DatabaseModule],
+  providers: [
+    CreateUserUseCase,
+    GetUserUseCase,
+    UpdateUserUseCase,
+    DeleteUserUseCase,
+    {
+      provide: UserRepositoryPort,
+      useClass: PgUserRepository,
+    },
+  ],
+  exports: [
+    CreateUserUseCase,
+    GetUserUseCase,
+    UpdateUserUseCase,
+    DeleteUserUseCase,
+  ],
 })
-export class UserUseCasesModule { }
+export class UserUseCasesModule {}

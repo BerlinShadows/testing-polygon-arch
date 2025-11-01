@@ -3,7 +3,7 @@ import { DatabaseConfigService } from './database-config.service';
 
 @Global()
 @Module({
-    providers: [DatabaseConfigService],
-    exports: [DatabaseConfigService],
+  providers: [DatabaseConfigService],
+  exports: [DatabaseConfigService],
 })
-export class DatabaseConfigModule { }
+export class DatabaseConfigModule {}
