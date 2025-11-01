@@ -3,7 +3,7 @@ import { NotificationRepositoryPort } from '../ports/notification.repository.por
 import { NotificationChannel } from '../../../domain/notification/notification-channel.interface';
 import { LogAuditEventUseCase } from '../../audit/use-cases/log-audit-event.use-case';
 import { LoggingService } from '../../logging/services/logging.service';
-import { AuditEvent } from 'src/core/domain/audit/audit-event.entity';
+import { AuditEventFactory } from 'src/core/domain/audit/audit-event.factory';
 
 export class SendNotificationUseCase {
     constructor(
@@ -44,30 +44,33 @@ export class SendNotificationUseCase {
             await channel.send(notification);
             notification.markAsSent();
             this.logger.info('Notification sent successfully', 'Notification', { id: notification.id });
+
+            await this.auditUseCase.execute(
+                AuditEventFactory.notificationProcessed(
+                    notification.id,
+                    notification.userId,
+                    notification.channel,
+                    notification.status,
+                    notification.title
+                )
+            );
+
         } catch (error) {
             notification.markAsFailed();
             this.logger.error('Failed to send notification', 'Notification', {
                 id: notification.id,
                 error: error.message,
             });
+
+            await this.auditUseCase.execute(
+                AuditEventFactory.notificationFailed(
+                    notification.id,
+                    notification.userId,
+                    notification.channel,
+                    error.message
+                )
+            );
         }
-
-        await this.repository.save(notification);
-
-        await this.auditUseCase.execute(
-            new AuditEvent(
-                'notification-service',
-                'notification_processed',
-                'notification',
-                {
-                    notificationId: notification.id,
-                    userId: notification.userId,
-                    channel: notification.channel,
-                    status: notification.status,
-                    title: notification.title,
-                }
-            )
-        );
 
         return notification;
     }

@@ -6,6 +6,9 @@ import { UserHttpModule } from 'src/infrastructure/interfaces/http/user/user.htt
 import { UserGraphQLModule } from 'src/infrastructure/interfaces/graphql/user/user.graphql.module';
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 import { WebsocketModule } from 'src/infrastructure/interfaces/websocket/websocket.module';
+import { RoleHttpModule } from 'src/infrastructure/interfaces/http/role/role.http.module';
+import { RoleGraphQLModule } from 'src/infrastructure/interfaces/graphql/role/role.graphql.module';
+import { GraphqlModule } from 'src/infrastructure/interfaces/graphql/graphql.module';
 
 @Module({
     imports: [
@@ -13,8 +16,9 @@ import { WebsocketModule } from 'src/infrastructure/interfaces/websocket/websock
         ConfigModule,
         DatabaseModule,
         WebsocketModule,
+        GraphqlModule,
         UserHttpModule,
-        UserGraphQLModule,
+        RoleHttpModule,
     ],
 })
 export class AppModule { }

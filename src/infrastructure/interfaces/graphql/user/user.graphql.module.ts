@@ -9,11 +9,6 @@ import { UserUseCasesModule } from 'src/infrastructure/application/user/user-use
 @Module({
     imports: [
         UserUseCasesModule,
-        GraphQLModule.forRoot<ApolloDriverConfig>({
-            driver: ApolloDriver,
-            autoSchemaFile: 'clean-schema.gql',
-            sortSchema: true,
-        }),
     ],
     providers: [
         UserResolver,

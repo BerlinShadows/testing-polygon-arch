@@ -6,7 +6,7 @@ export class InMemoryAuditRepository implements AuditRepositoryPort {
 
     async save(event: AuditEvent): Promise<void> {
         this.events.push(event);
-        console.log(`[AUDIT] Saved: ${event.id} | ${event.eventType}`);
+        console.log(`[AUDIT] Saved: ${event.payload} | ${event.eventType}`);
     }
 
     async findByProvider(providerId: string, limit = 10): Promise<AuditEvent[]> {

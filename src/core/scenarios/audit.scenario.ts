@@ -1,11 +1,12 @@
-import { LogAuditEventUseCase } from '../application/audit/use-cases/log-audit-event.use-case';
-import { AuditEvent } from '../domain/audit/audit-event.entity';
-import { InMemoryAuditRepository } from '../infrastructure-adapters/in-memory-audit-repository';
-import { LoggingService } from '../application/logging/services/logging.service';
-import { ConsoleLoggerAdapter } from '../infrastructure-adapters/console-logger.adapter';
+import { LogAuditEventUseCase } from "../application/audit/use-cases/log-audit-event.use-case";
+import { LoggingService } from "../application/logging/services/logging.service";
+import { AuditEventFactory } from "../domain/audit/audit-event.factory";
+import { ConsoleLoggerAdapter } from "../infrastructure-adapters/console-logger.adapter";
+import { InMemoryAuditRepository } from "../infrastructure-adapters/in-memory-audit-repository";
+
 
 async function run() {
-    console.log('[CORE:AUDIT] Running AUDIT scenario...\n');
+    console.log('Running AUDIT scenario...\n');
 
     const logger = new ConsoleLoggerAdapter();
     const logging = new LoggingService(logger);
@@ -15,20 +16,19 @@ async function run() {
 
     logging.info('Starting audit scenario', 'AuditScenario');
 
-    const event = new AuditEvent(
-        'audit-' + Date.now(),
-        'scenario-demo',
-        'user_action',
-        { action: 'login', userId: 'user-789' }
+    const event = AuditEventFactory.userLogin(
+        'user-789',
+        '192.168.1.100',
+        'Mozilla/5.0'
     );
 
     await useCase.execute(event);
 
     logging.info('Audit scenario completed', 'AuditScenario');
-    console.log('[CORE:AUDIT] scenario finished.');
+    console.log('\n Audit scenario finished.');
 }
 
 run().catch(err => {
-    console.error('[CORE:AUDIT] Audit scenario failed:', err);
+    console.error(' Audit scenario failed:', err);
     process.exit(1);
 });

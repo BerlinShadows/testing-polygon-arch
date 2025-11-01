@@ -1,5 +1,5 @@
 import { Args, Int, Query, Resolver, Subscription } from "@nestjs/graphql";
-import { pubSub } from "src/pubsub";
+import { pubSub } from "src/_z/pubsub";
 import { GetModelResponse, RequestMadeMessage, RequestMadeMessageV2, RequestMadeMessageV3 } from "./types/types";
 
 
