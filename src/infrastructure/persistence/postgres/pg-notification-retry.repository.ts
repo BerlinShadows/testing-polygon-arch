@@ -7,13 +7,13 @@ import { Notification } from 'src/core/domain/notification/notification.entity';
 export class PgNotificationRetryRepository implements NotificationRetryRepositoryPort {
     constructor(private pg: PgDatabaseService) { }
 
-    async saveForRetry(notification: Notification, attempt: number): Promise<void> {
+    async saveForRetry(notification: Notification): Promise<void> {
         const query = `
-      UPDATE notifications
-      SET status = 'retrying', attempt = $1
-      WHERE id = $2;
-    `;
-        await this.pg.getPool().query(query, [attempt, notification.id]);
+    UPDATE notifications
+    SET status = 'retrying', attempt = $1
+    WHERE id = $2;
+  `;
+        await this.pg.getPool().query(query, [notification.attempt, notification.id]);
     }
 
     async findPendingRetries(): Promise<Notification[]> {
@@ -43,8 +43,8 @@ export class PgNotificationRetryRepository implements NotificationRetryRepositor
             row.status as any,
             new Date(row.created_at),
             row.sent_at ? new Date(row.sent_at) : undefined,
+            row.attempt,
         );
-        (notification as any).attempt = row.attempt;
         return notification;
     }
 }

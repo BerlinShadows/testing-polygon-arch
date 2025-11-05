@@ -17,8 +17,10 @@ CREATE TABLE
         created_at TIMESTAMP NOT NULL
     );
 
+DROP TABLE IF EXISTS notifications;
+
 CREATE TABLE
-    IF NOT EXISTS notifications (
+    notifications (
         id TEXT PRIMARY KEY,
         user_id TEXT NOT NULL,
         channel TEXT NOT NULL,
@@ -27,8 +29,15 @@ CREATE TABLE
         payload JSONB,
         status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP NOT NULL,
-        sent_at TIMESTAMP
+        sent_at TIMESTAMP,
+        attempt INTEGER DEFAULT 0
     );
+
+CREATE INDEX idx_notifications_user_id ON notifications (user_id);
+
+CREATE INDEX idx_notifications_status ON notifications (status);
+
+CREATE INDEX idx_notifications_attempt ON notifications (attempt);
 
 CREATE TABLE
     IF NOT EXISTS audit_events (

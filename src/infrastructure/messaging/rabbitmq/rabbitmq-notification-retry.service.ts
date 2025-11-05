@@ -10,13 +10,10 @@ export class RabbitMQNotificationRetryService implements NotificationRetryServic
 
     constructor(private readonly rabbitMQ: RabbitMQAdapter) { }
 
-    async scheduleRetry(notification: Notification, attempt: number): Promise<void> {
-        const delay = Math.pow(2, attempt) * 1000;
-
+    async scheduleRetry(notification: Notification, delay: number): Promise<void> {
         setTimeout(async () => {
             await this.rabbitMQ.publish(this.retryQueue, {
                 ...notification,
-                attempt,
             });
         }, delay);
     }

@@ -66,8 +66,11 @@ export class SendNotificationUseCase {
                 ),
             );
         } catch (error) {
-            this.logger.warn(`Failed to send notification: ${error.message}`, 'Notification', { id: notification.id });
-
+            notification.markAsFailed();
+            this.logger.error('Failed to send notification', 'Notification', {
+                id: notification.id,
+                error: error.message,
+            });
 
             await this.auditUseCase.execute(
                 AuditEventFactory.notificationFailed(
@@ -78,10 +81,11 @@ export class SendNotificationUseCase {
                 ),
             );
 
-            await this.retryUseCase.execute(notification, 0);
-
+            await this.retryUseCase.execute(notification);
             return notification;
         }
+
+        await this.repository.save(notification);
         return notification;
     }
 }

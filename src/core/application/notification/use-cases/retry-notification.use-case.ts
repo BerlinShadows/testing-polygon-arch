@@ -3,20 +3,25 @@ import { NotificationRetryRepositoryPort } from '../ports/notification-retry-rep
 import { NotificationRetryServicePort } from '../ports/notification-retry-service.port';
 
 export class RetryNotificationUseCase {
+    private readonly maxAttempts = 3;
+
     constructor(
         private readonly retryRepo: NotificationRetryRepositoryPort,
         private readonly retryService: NotificationRetryServicePort,
     ) { }
 
-    async execute(notification: Notification, attempt: number): Promise<void> {
-        const maxAttempts = 3;
-        if (attempt >= maxAttempts) {
+    async execute(notification: Notification): Promise<void> {
+        notification.incrementAttempt();
+
+        if (!notification.canRetry(this.maxAttempts)) {
             notification.markAsFailed();
+            await this.retryRepo.markAsProcessed(notification.id);
             return;
         }
 
-        await this.retryRepo.saveForRetry(notification, attempt + 1);
+        await this.retryRepo.saveForRetry(notification);
 
-        await this.retryService.scheduleRetry(notification, attempt + 1);
+        const delay = Math.pow(2, notification.attempt) * 1000;
+        await this.retryService.scheduleRetry(notification, delay);
     }
 }
