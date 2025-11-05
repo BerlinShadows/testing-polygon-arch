@@ -7,8 +7,6 @@ import {
     Put,
     Delete,
     NotFoundException,
-    ParseIntPipe,
-    DefaultValuePipe,
     Query,
 } from '@nestjs/common';
 
@@ -30,7 +28,6 @@ export class UserController {
 
     @Post()
     async create(@Body() dto: { email: string; name: string; roles: string[] }) {
-        console.log(dto)
         return this.createUserUseCase.execute(dto.email, dto.name, dto.roles);
     }
 
@@ -72,7 +69,13 @@ export class UserController {
 
     @Get()
     async findAll(
-        @Query() query: { page?: string; limit?: string; email?: string; isActive?: string },
+        @Query()
+        query: {
+            page?: string;
+            limit?: string;
+            email?: string;
+            isActive?: string;
+        },
     ) {
         const options = {
             page: parseInt(query.page || '1', 10),
@@ -81,7 +84,12 @@ export class UserController {
 
         const filters = {
             email: query.email,
-            isActive: query.isActive === 'true' ? true : query.isActive === 'false' ? false : undefined,
+            isActive:
+                query.isActive === 'true'
+                    ? true
+                    : query.isActive === 'false'
+                        ? false
+                        : undefined,
         };
 
         return this.listUsersUseCase.execute(options, filters);

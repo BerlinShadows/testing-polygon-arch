@@ -3,18 +3,18 @@ import { User } from '../user.entity';
 
 @ObjectType()
 export class PaginatedUser {
-    @Field(() => [User])
-    data: User[];
+  @Field(() => [User])
+  data: User[];
 
-    @Field(() => Int)
-    total: number;
+  @Field(() => Int)
+  total: number;
 
-    @Field(() => Int)
-    page: number;
+  @Field(() => Int)
+  page: number;
 
-    @Field(() => Int)
-    limit: number;
+  @Field(() => Int)
+  limit: number;
 
-    @Field(() => Int)
-    totalPages: number;
+  @Field(() => Int)
+  totalPages: number;
 }

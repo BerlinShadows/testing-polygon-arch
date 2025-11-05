@@ -4,22 +4,16 @@ import { RoleRepositoryPort } from '../ports/role.repository.port';
 import { generate } from 'src/core/services/id-generator.service';
 
 export class CreateRoleUseCase {
-    constructor(
-        private readonly roleRepository: RoleRepositoryPort,
-    ) { }
+  constructor(private readonly roleRepository: RoleRepositoryPort) {}
 
-    async execute(name: string, description: string): Promise<Role> {
-        const existing = await this.roleRepository.findByName(name);
-        if (existing) {
-            throw new RoleAlreadyExistsError(name);
-        }
-
-        const role = new Role(
-            generate('role'),
-            name,
-            description
-        );
-
-        return this.roleRepository.create(role);
+  async execute(name: string, description: string): Promise<Role> {
+    const existing = await this.roleRepository.findByName(name);
+    if (existing) {
+      throw new RoleAlreadyExistsError(name);
     }
+
+    const role = new Role(generate('role'), name, description);
+
+    return this.roleRepository.create(role);
+  }
 }

@@ -5,17 +5,17 @@ import { LoggingService } from 'src/core/application/logging/services/logging.se
 import { ConsoleLoggerAdapter } from 'src/core/infrastructure-adapters/console-logger.adapter';
 
 @Module({
-    providers: [
-        {
-            provide: LoggerPort,
-            useClass: ConsoleLoggerAdapter,
-        },
-        {
-            provide: LoggingService,
-            useFactory: (logger: LoggerPort) => new LoggingService(logger),
-            inject: [LoggerPort],
-        },
-    ],
-    exports: [LoggingService],
+  providers: [
+    {
+      provide: LoggerPort,
+      useClass: ConsoleLoggerAdapter,
+    },
+    {
+      provide: LoggingService,
+      useFactory: (logger: LoggerPort) => new LoggingService(logger),
+      inject: [LoggerPort],
+    },
+  ],
+  exports: [LoggingService],
 })
-export class LoggingModule { }
+export class LoggingModule {}

@@ -9,42 +9,40 @@ import { UpdateRoleUseCase } from 'src/core/application/role/use-cases/update-ro
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 
 @Module({
-    imports: [DatabaseModule],
-    providers: [
-        {
-            provide: CreateRoleUseCase,
-            useFactory: (
-                repo: RoleRepositoryPort,
-            ) => new CreateRoleUseCase(repo),
-            inject: [RoleRepositoryPort],
-        },
-        {
-            provide: GetRoleUseCase,
-            useFactory: (repo: RoleRepositoryPort) => new GetRoleUseCase(repo),
-            inject: [RoleRepositoryPort],
-        },
-        {
-            provide: UpdateRoleUseCase,
-            useFactory: (repo: RoleRepositoryPort) => new UpdateRoleUseCase(repo),
-            inject: [RoleRepositoryPort],
-        },
-        {
-            provide: DeleteRoleUseCase,
-            useFactory: (repo: RoleRepositoryPort) => new DeleteRoleUseCase(repo),
-            inject: [RoleRepositoryPort],
-        },
-        {
-            provide: ListRolesUseCase,
-            useFactory: (repo: RoleRepositoryPort) => new ListRolesUseCase(repo),
-            inject: [RoleRepositoryPort],
-        },
-    ],
-    exports: [
-        CreateRoleUseCase,
-        GetRoleUseCase,
-        UpdateRoleUseCase,
-        DeleteRoleUseCase,
-        ListRolesUseCase,
-    ],
+  imports: [DatabaseModule],
+  providers: [
+    {
+      provide: CreateRoleUseCase,
+      useFactory: (repo: RoleRepositoryPort) => new CreateRoleUseCase(repo),
+      inject: [RoleRepositoryPort],
+    },
+    {
+      provide: GetRoleUseCase,
+      useFactory: (repo: RoleRepositoryPort) => new GetRoleUseCase(repo),
+      inject: [RoleRepositoryPort],
+    },
+    {
+      provide: UpdateRoleUseCase,
+      useFactory: (repo: RoleRepositoryPort) => new UpdateRoleUseCase(repo),
+      inject: [RoleRepositoryPort],
+    },
+    {
+      provide: DeleteRoleUseCase,
+      useFactory: (repo: RoleRepositoryPort) => new DeleteRoleUseCase(repo),
+      inject: [RoleRepositoryPort],
+    },
+    {
+      provide: ListRolesUseCase,
+      useFactory: (repo: RoleRepositoryPort) => new ListRolesUseCase(repo),
+      inject: [RoleRepositoryPort],
+    },
+  ],
+  exports: [
+    CreateRoleUseCase,
+    GetRoleUseCase,
+    UpdateRoleUseCase,
+    DeleteRoleUseCase,
+    ListRolesUseCase,
+  ],
 })
-export class RoleUseCasesModule { }
+export class RoleUseCasesModule {}

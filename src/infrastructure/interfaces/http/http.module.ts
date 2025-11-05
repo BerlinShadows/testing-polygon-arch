@@ -4,9 +4,6 @@ import { UserHttpModule } from './user/user.http.module';
 import { RoleHttpModule } from './role/role.http.module';
 
 @Module({
-    imports: [
-        UserHttpModule,
-        RoleHttpModule,
-    ]
+  imports: [UserHttpModule, RoleHttpModule],
 })
-export class HttpModule { }
+export class HttpModule {}

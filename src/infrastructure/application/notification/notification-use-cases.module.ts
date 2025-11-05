@@ -13,30 +13,34 @@ import { NotificationChannel } from 'src/core/domain/notification/notification-c
 import { LoggingModule } from '../logger/logging-use-case.module';
 
 @Module({
-    imports: [WebsocketModule, DatabaseModule, AuditUseCasesModule, LoggingModule],
-    providers: [
-        {
-            provide: 'NotificationChannels',
-            useFactory: (
-                wsChannel: WebSocketNotificationChannel,
-            ) => [wsChannel],
-            inject: [
-                WebSocketNotificationChannel,
-            ],
-        },
-        {
-            provide: SendNotificationUseCase,
-            useFactory: (
-                repo: NotificationRepositoryPort,
-                channels: NotificationChannel[],
-                audit: LogAuditEventUseCase,
-                logger: LoggingService
-            ) => new SendNotificationUseCase(repo, channels, audit, logger),
-            inject: [NotificationRepositoryPort, 'NotificationChannels', LogAuditEventUseCase, LoggingService],
-        },
-    ],
-    exports: [
-        SendNotificationUseCase,
-    ],
+  imports: [
+    WebsocketModule,
+    DatabaseModule,
+    AuditUseCasesModule,
+    LoggingModule,
+  ],
+  providers: [
+    {
+      provide: 'NotificationChannels',
+      useFactory: (wsChannel: WebSocketNotificationChannel) => [wsChannel],
+      inject: [WebSocketNotificationChannel],
+    },
+    {
+      provide: SendNotificationUseCase,
+      useFactory: (
+        repo: NotificationRepositoryPort,
+        channels: NotificationChannel[],
+        audit: LogAuditEventUseCase,
+        logger: LoggingService,
+      ) => new SendNotificationUseCase(repo, channels, audit, logger),
+      inject: [
+        NotificationRepositoryPort,
+        'NotificationChannels',
+        LogAuditEventUseCase,
+        LoggingService,
+      ],
+    },
+  ],
+  exports: [SendNotificationUseCase],
 })
-export class NotificationUseCasesModule { }
+export class NotificationUseCasesModule {}

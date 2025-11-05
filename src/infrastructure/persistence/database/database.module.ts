@@ -13,31 +13,31 @@ import { PgAuditRepository } from '../postgres/pg-audit.repository';
 
 @Global()
 @Module({
-    imports: [DatabaseConfigModule],
-    providers: [
-        PgDatabaseService,
-        {
-            provide: UserRepositoryPort,
-            useClass: PgUserRepository,
-        },
-        {
-            provide: RoleRepositoryPort,
-            useClass: PgRoleRepository,
-        },
-        {
-            provide: NotificationRepositoryPort,
-            useClass: PgNotificationRepository,
-        },
-        {
-            provide: AuditRepositoryPort,
-            useClass: PgAuditRepository,
-        },
-    ],
-    exports: [
-        UserRepositoryPort,
-        RoleRepositoryPort,
-        NotificationRepositoryPort,
-        AuditRepositoryPort,
-    ],
+  imports: [DatabaseConfigModule],
+  providers: [
+    PgDatabaseService,
+    {
+      provide: UserRepositoryPort,
+      useClass: PgUserRepository,
+    },
+    {
+      provide: RoleRepositoryPort,
+      useClass: PgRoleRepository,
+    },
+    {
+      provide: NotificationRepositoryPort,
+      useClass: PgNotificationRepository,
+    },
+    {
+      provide: AuditRepositoryPort,
+      useClass: PgAuditRepository,
+    },
+  ],
+  exports: [
+    UserRepositoryPort,
+    RoleRepositoryPort,
+    NotificationRepositoryPort,
+    AuditRepositoryPort,
+  ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

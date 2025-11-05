@@ -1,4 +1,4 @@
 export interface UserFilters {
-    email?: string;
-    isActive?: boolean;
+  email?: string;
+  isActive?: boolean;
 }

@@ -11,7 +11,7 @@ export class CreateUserUseCase {
     private readonly userRepository: UserRepositoryPort,
     private readonly roleRepository: RoleRepositoryPort,
     private readonly sendNotificationUseCase: SendNotificationUseCase,
-  ) { }
+  ) {}
 
   async execute(email: string, name: string, roles: string[]): Promise<User> {
     const existing = await this.userRepository.findByEmail(email);
@@ -26,12 +26,7 @@ export class CreateUserUseCase {
       }
     }
 
-    const user = new User(
-      generate('user'),
-      email,
-      name,
-      roles
-    );
+    const user = new User(generate('user'), email, name, roles);
 
     const savedUser = await this.userRepository.create(user);
 
@@ -44,7 +39,7 @@ export class CreateUserUseCase {
         userId: savedUser.id,
         email: savedUser.email,
         roles: savedUser.roles,
-      }
+      },
     );
 
     return savedUser;

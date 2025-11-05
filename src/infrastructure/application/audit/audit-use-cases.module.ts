@@ -15,4 +15,4 @@ import { DatabaseModule } from 'src/infrastructure/persistence/database/database
   ],
   exports: [LogAuditEventUseCase],
 })
-export class AuditUseCasesModule { }
+export class AuditUseCasesModule {}

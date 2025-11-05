@@ -8,18 +8,18 @@ import { GraphqlModule } from 'src/infrastructure/interfaces/graphql/graphql.mod
 import { HttpModule } from 'src/infrastructure/interfaces/http/http.module';
 
 @Module({
-    imports: [
-        //
-        CoreModule,
-        //
-        ConfigModule,
-        //
-        DatabaseModule,
-        WebsocketModule,
-        //
-        GraphqlModule,
-        HttpModule,
-        //
-    ],
+  imports: [
+    //
+    CoreModule,
+    //
+    ConfigModule,
+    //
+    DatabaseModule,
+    WebsocketModule,
+    //
+    GraphqlModule,
+    HttpModule,
+    //
+  ],
 })
-export class AppModule { }
+export class AppModule {}
