@@ -8,6 +8,6 @@ export class CreateUserInput {
   @Field()
   name: string;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true, defaultValue: ['admin'] })
   roles: string[];
 }

@@ -20,8 +20,16 @@ import { PgRoleRepository } from 'src/infrastructure/persistence/postgres/pg-rol
             useFactory: (repo: RoleRepositoryPort) => new GetRoleUseCase(repo),
             inject: [RoleRepositoryPort],
         },
-        UpdateRoleUseCase,
-        DeleteRoleUseCase,
+        {
+            provide: UpdateRoleUseCase,
+            useFactory: (repo: RoleRepositoryPort) => new UpdateRoleUseCase(repo),
+            inject: [RoleRepositoryPort],
+        },
+        {
+            provide: DeleteRoleUseCase,
+            useFactory: (repo: RoleRepositoryPort) => new DeleteRoleUseCase(repo),
+            inject: [RoleRepositoryPort],
+        },
         {
             provide: ListRolesUseCase,
             useFactory: (repo: RoleRepositoryPort) => new ListRolesUseCase(repo),

@@ -27,6 +27,7 @@ export class UserController {
 
     @Post()
     async create(@Body() dto: { email: string; name: string; roles: string[] }) {
+        console.log(dto)
         return this.createUserUseCase.execute(dto.email, dto.name, dto.roles);
     }
 
