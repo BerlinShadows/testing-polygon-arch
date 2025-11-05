@@ -52,7 +52,10 @@ export class TestResolver {
             'websocket',
             'REQUEST_MADE',
             res.message,
-            { id: this.counter, timestamp: new Date().toISOString() },
+            {
+                id: this.counter, timestamp: new Date().toISOString()
+
+            },
         );
         console.log('[PUBLISH] Событие REQUEST_MADE');
         try {

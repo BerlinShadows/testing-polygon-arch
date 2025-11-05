@@ -10,8 +10,8 @@ export class PgNotificationRepository implements NotificationRepositoryPort {
 
     async save(notification: Notification): Promise<void> {
         const query = `
-      INSERT INTO notifications (id, user_id, channel, title, body, payload, status, created_at, sent_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO notifications (id, user_id, channel, title, body, payload, status, created_at, sent_at, attempt)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       ON CONFLICT (id) DO UPDATE SET
         status = EXCLUDED.status,
         sent_at = EXCLUDED.sent_at;

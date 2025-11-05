@@ -39,7 +39,7 @@ export class SendNotificationUseCase {
             body,
             payload,
         );
-
+        
         await this.repository.save(notification);
 
         const channel = this.channels.find((c) => c.type === channelType);
@@ -48,7 +48,6 @@ export class SendNotificationUseCase {
             this.logger.error(error, 'Notification', { userId });
             throw new Error(error);
         }
-
         try {
             await channel.send(notification);
             notification.markAsSent();
