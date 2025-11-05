@@ -10,34 +10,41 @@ import { PgRoleRepository } from '../postgres/pg-role.repository';
 import { PgUserRepository } from '../postgres/pg-user.repository';
 import { AuditRepositoryPort } from 'src/core/application/audit/ports/audit-repository.port';
 import { PgAuditRepository } from '../postgres/pg-audit.repository';
+import { NotificationRetryRepositoryPort } from 'src/core/application/notification/ports/notification-retry-repository.port';
+import { PgNotificationRetryRepository } from '../postgres/pg-notification-retry.repository';
 
 @Global()
 @Module({
-  imports: [DatabaseConfigModule],
-  providers: [
-    PgDatabaseService,
-    {
-      provide: UserRepositoryPort,
-      useClass: PgUserRepository,
-    },
-    {
-      provide: RoleRepositoryPort,
-      useClass: PgRoleRepository,
-    },
-    {
-      provide: NotificationRepositoryPort,
-      useClass: PgNotificationRepository,
-    },
-    {
-      provide: AuditRepositoryPort,
-      useClass: PgAuditRepository,
-    },
-  ],
-  exports: [
-    UserRepositoryPort,
-    RoleRepositoryPort,
-    NotificationRepositoryPort,
-    AuditRepositoryPort,
-  ],
+    imports: [DatabaseConfigModule],
+    providers: [
+        PgDatabaseService,
+        {
+            provide: UserRepositoryPort,
+            useClass: PgUserRepository,
+        },
+        {
+            provide: RoleRepositoryPort,
+            useClass: PgRoleRepository,
+        },
+        {
+            provide: NotificationRepositoryPort,
+            useClass: PgNotificationRepository,
+        },
+        {
+            provide: AuditRepositoryPort,
+            useClass: PgAuditRepository,
+        },
+        {
+            provide: NotificationRetryRepositoryPort,
+            useClass: PgNotificationRetryRepository,
+        },
+    ],
+    exports: [
+        UserRepositoryPort,
+        RoleRepositoryPort,
+        NotificationRepositoryPort,
+        AuditRepositoryPort,
+        NotificationRetryRepositoryPort,
+    ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

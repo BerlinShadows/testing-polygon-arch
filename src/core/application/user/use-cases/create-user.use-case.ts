@@ -1,17 +1,20 @@
 import { User } from 'src/core/domain/user/user.entity';
 import { UserAlreadyExistsError } from 'src/core/domain/user/user.errors';
 import { RoleNotFoundError } from 'src/core/domain/role/role.errors';
+import { generate } from 'src/shared/utills/id-generator';
 import { UserRepositoryPort } from '../ports/user.repository.port';
 import { RoleRepositoryPort } from '../../role/ports/role.repository.port';
 import { SendNotificationUseCase } from '../../notification/use-cases/send-notification.use-case';
-import { generate } from 'src/core/services/id-generator.service';
+import { SendMessageUseCase } from '../../messaging/use-cases/send-message.use-case';
+import { NotificationMessage } from 'src/shared/types/message.types';
 
 export class CreateUserUseCase {
   constructor(
     private readonly userRepository: UserRepositoryPort,
     private readonly roleRepository: RoleRepositoryPort,
     private readonly sendNotificationUseCase: SendNotificationUseCase,
-  ) {}
+    private readonly sendMessageUseCase: SendMessageUseCase,
+  ) { }
 
   async execute(email: string, name: string, roles: string[]): Promise<User> {
     const existing = await this.userRepository.findByEmail(email);
@@ -30,7 +33,7 @@ export class CreateUserUseCase {
 
     const savedUser = await this.userRepository.create(user);
 
-    await this.sendNotificationUseCase.execute(
+    const notification = await this.sendNotificationUseCase.execute(
       savedUser.id,
       'websocket',
       'Новый пользователь создан',
@@ -41,6 +44,19 @@ export class CreateUserUseCase {
         roles: savedUser.roles,
       },
     );
+
+    const message: NotificationMessage = {
+      id: notification.id,
+      userId: notification.userId,
+      channel: notification.channel,
+      title: notification.title,
+      body: notification.body,
+      payload: notification.payload,
+      timestamp: notification.createdAt.toISOString(),
+      eventType: 'notification_created',
+    };
+
+    await this.sendMessageUseCase.execute('notifications', message);
 
     return savedUser;
   }

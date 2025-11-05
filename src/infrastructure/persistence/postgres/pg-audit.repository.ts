@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AuditEvent } from '../../../core/domain/audit/audit-event.entity';
 import { AuditRepositoryPort } from '../../../core/application/audit/ports/audit-repository.port';
 import { PgDatabaseService } from '../database/pg-database.service';
-import { generate } from 'src/core/services/id-generator.service';
+import { generate } from 'src/shared/utills/id-generator';
 
 @Injectable()
 export class PgAuditRepository implements AuditRepositoryPort {

@@ -1,4 +1,4 @@
-import { generate } from 'src/core/services/id-generator.service';
+import { generate } from 'src/shared/utills/id-generator';
 import { AuditEvent } from './audit-event.entity';
 import { AuditProvider, AuditEventType } from './audit-event.types';
 

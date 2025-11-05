@@ -67,7 +67,7 @@ export class TestResolver {
     } catch (err) {
       console.error('Ошибка публикации:', err);
     }
-
+    
     return res;
   }
 
