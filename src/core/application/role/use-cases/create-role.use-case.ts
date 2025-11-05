@@ -1,12 +1,11 @@
 import { Role } from 'src/core/domain/role/role.entity';
 import { RoleAlreadyExistsError } from 'src/core/domain/role/role.errors';
 import { RoleRepositoryPort } from '../ports/role.repository.port';
-import { IdGeneratorService } from 'src/core/services/id-generator.service';
+import { generate } from 'src/core/services/id-generator.service';
 
 export class CreateRoleUseCase {
     constructor(
         private readonly roleRepository: RoleRepositoryPort,
-        private readonly idGenerator: IdGeneratorService
     ) { }
 
     async execute(name: string, description: string): Promise<Role> {
@@ -16,7 +15,7 @@ export class CreateRoleUseCase {
         }
 
         const role = new Role(
-            this.idGenerator.generate('role'),
+            generate('role'),
             name,
             description
         );

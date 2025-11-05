@@ -6,24 +6,37 @@ import { LogAuditEventUseCase } from 'src/core/application/audit/use-cases/log-a
 import { LoggingService } from 'src/core/application/logging/services/logging.service';
 import { WebsocketModule } from 'src/infrastructure/interfaces/websocket/websocket.module';
 import { WebSocketNotificationChannel } from 'src/infrastructure/interfaces/websocket/websocket-notification.channel';
-import { CoreModule } from 'src/core/core.module';
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
+import { NotificationRepositoryPort } from 'src/core/application/notification/ports/notification.repository.port';
+import { AuditUseCasesModule } from '../audit/audit-use-cases.module';
+import { NotificationChannel } from 'src/core/domain/notification/notification-channel.interface';
+import { LoggingModule } from '../logger/logging-use-case.module';
 
 @Module({
-    imports: [CoreModule, WebsocketModule, DatabaseModule],
+    imports: [WebsocketModule, DatabaseModule, AuditUseCasesModule, LoggingModule],
     providers: [
-        SendNotificationUseCase,
         {
             provide: 'NotificationChannels',
-            useFactory: (wsChannel: WebSocketNotificationChannel) => [
-                new ConsoleNotificationChannel(),
-                wsChannel,
+            useFactory: (
+                wsChannel: WebSocketNotificationChannel,
+            ) => [wsChannel],
+            inject: [
+                WebSocketNotificationChannel,
             ],
-            inject: [WebSocketNotificationChannel],
         },
-        LogAuditEventUseCase,
-        LoggingService,
+        {
+            provide: SendNotificationUseCase,
+            useFactory: (
+                repo: NotificationRepositoryPort,
+                channels: NotificationChannel[],
+                audit: LogAuditEventUseCase,
+                logger: LoggingService
+            ) => new SendNotificationUseCase(repo, channels, audit, logger),
+            inject: [NotificationRepositoryPort, 'NotificationChannels', LogAuditEventUseCase, LoggingService],
+        },
     ],
-    exports: [SendNotificationUseCase],
+    exports: [
+        SendNotificationUseCase,
+    ],
 })
 export class NotificationUseCasesModule { }

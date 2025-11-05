@@ -8,6 +8,8 @@ import { UserRepositoryPort } from 'src/core/application/user/ports/user.reposit
 import { PgNotificationRepository } from '../postgres/pg-notification.repository';
 import { PgRoleRepository } from '../postgres/pg-role.repository';
 import { PgUserRepository } from '../postgres/pg-user.repository';
+import { AuditRepositoryPort } from 'src/core/application/audit/ports/audit-repository.port';
+import { PgAuditRepository } from '../postgres/pg-audit.repository';
 
 @Global()
 @Module({
@@ -25,11 +27,17 @@ import { PgUserRepository } from '../postgres/pg-user.repository';
         {
             provide: NotificationRepositoryPort,
             useClass: PgNotificationRepository,
-        },],
+        },
+        {
+            provide: AuditRepositoryPort,
+            useClass: PgAuditRepository,
+        },
+    ],
     exports: [
         UserRepositoryPort,
         RoleRepositoryPort,
         NotificationRepositoryPort,
+        AuditRepositoryPort,
     ],
 })
 export class DatabaseModule { }

@@ -19,6 +19,7 @@ import { HttpModule } from 'src/infrastructure/interfaces/http/http.module';
         //
         GraphqlModule,
         HttpModule,
+        //
     ],
 })
 export class AppModule { }

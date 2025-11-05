@@ -6,20 +6,17 @@ import { DeleteRoleUseCase } from 'src/core/application/role/use-cases/delete-ro
 import { GetRoleUseCase } from 'src/core/application/role/use-cases/get-role.use-case';
 import { ListRolesUseCase } from 'src/core/application/role/use-cases/list-roles.use-case';
 import { UpdateRoleUseCase } from 'src/core/application/role/use-cases/update-role.use-case';
-import { CoreModule } from 'src/core/core.module';
-import { IdGeneratorService } from 'src/core/services/id-generator.service';
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 
 @Module({
-    imports: [CoreModule, DatabaseModule],
+    imports: [DatabaseModule],
     providers: [
         {
             provide: CreateRoleUseCase,
             useFactory: (
                 repo: RoleRepositoryPort,
-                idGen: IdGeneratorService
-            ) => new CreateRoleUseCase(repo, idGen),
-            inject: [RoleRepositoryPort, IdGeneratorService],
+            ) => new CreateRoleUseCase(repo),
+            inject: [RoleRepositoryPort],
         },
         {
             provide: GetRoleUseCase,

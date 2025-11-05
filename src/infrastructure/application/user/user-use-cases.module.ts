@@ -7,27 +7,23 @@ import { GetUserUseCase } from 'src/core/application/user/use-cases/get-user.use
 import { UpdateUserUseCase } from 'src/core/application/user/use-cases/update-user.use-case';
 import { ListUsersUseCase } from 'src/core/application/user/use-cases/list-users.use-case';
 import { RoleRepositoryPort } from 'src/core/application/role/ports/role.repository.port';
-import { CoreModule } from 'src/core/core.module';
-import { IdGeneratorService } from 'src/core/services/id-generator.service';
-import { NotificationUseCasesModule } from '../notification/notification-use-cases.module';
 import { SendNotificationUseCase } from 'src/core/application/notification/use-cases/send-notification.use-case';
+import { NotificationUseCasesModule } from '../notification/notification-use-cases.module';
 import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 
 @Module({
-    imports: [CoreModule, NotificationUseCasesModule, DatabaseModule],
+    imports: [NotificationUseCasesModule, DatabaseModule],
     providers: [
         {
             provide: CreateUserUseCase,
             useFactory: (
                 userRepo: UserRepositoryPort,
                 roleRepo: RoleRepositoryPort,
-                idGen: IdGeneratorService,
                 sendNotification: SendNotificationUseCase,
-            ) => new CreateUserUseCase(userRepo, roleRepo, idGen, sendNotification),
+            ) => new CreateUserUseCase(userRepo, roleRepo, sendNotification),
             inject: [
                 UserRepositoryPort,
                 RoleRepositoryPort,
-                IdGeneratorService,
                 SendNotificationUseCase,
             ],
         },

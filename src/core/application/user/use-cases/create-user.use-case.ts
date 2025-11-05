@@ -1,16 +1,15 @@
 import { User } from 'src/core/domain/user/user.entity';
 import { UserAlreadyExistsError } from 'src/core/domain/user/user.errors';
 import { RoleNotFoundError } from 'src/core/domain/role/role.errors';
-import { IdGeneratorService } from 'src/core/services/id-generator.service';
 import { UserRepositoryPort } from '../ports/user.repository.port';
 import { RoleRepositoryPort } from '../../role/ports/role.repository.port';
 import { SendNotificationUseCase } from '../../notification/use-cases/send-notification.use-case';
+import { generate } from 'src/core/services/id-generator.service';
 
 export class CreateUserUseCase {
   constructor(
     private readonly userRepository: UserRepositoryPort,
     private readonly roleRepository: RoleRepositoryPort,
-    private readonly idGenerator: IdGeneratorService,
     private readonly sendNotificationUseCase: SendNotificationUseCase,
   ) { }
 
@@ -28,7 +27,7 @@ export class CreateUserUseCase {
     }
 
     const user = new User(
-      this.idGenerator.generate('user'),
+      generate('user'),
       email,
       name,
       roles
@@ -37,7 +36,7 @@ export class CreateUserUseCase {
     const savedUser = await this.userRepository.create(user);
 
     await this.sendNotificationUseCase.execute(
-      'admin',
+      savedUser.id,
       'websocket',
       'Новый пользователь создан',
       `Пользователь ${name} (${email}) зарегистрирован с ролями: ${roles.join(', ')}`,

@@ -7,7 +7,7 @@ import { NotificationChannel } from '../../../domain/notification/notification-c
 import { LogAuditEventUseCase } from '../../audit/use-cases/log-audit-event.use-case';
 import { LoggingService } from '../../logging/services/logging.service';
 import { AuditEventFactory } from 'src/core/domain/audit/audit-event.factory';
-import { IdGeneratorService } from 'src/core/services/id-generator.service';
+import { generate } from 'src/core/services/id-generator.service';
 
 export class SendNotificationUseCase {
     constructor(
@@ -15,7 +15,6 @@ export class SendNotificationUseCase {
         private readonly channels: NotificationChannel[],
         private readonly auditUseCase: LogAuditEventUseCase,
         private readonly logger: LoggingService,
-        private readonly idGenerator: IdGeneratorService,
     ) { }
 
     async execute(
@@ -31,7 +30,7 @@ export class SendNotificationUseCase {
         });
 
         const notification = new Notification(
-            this.idGenerator.generate('notification'),
+            generate('notification'),
             userId,
             channelType,
             title,
@@ -80,7 +79,6 @@ export class SendNotificationUseCase {
             );
         }
 
-        await this.repository.save(notification);
 
 
         return notification;

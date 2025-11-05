@@ -4,7 +4,6 @@ import { NotificationRepositoryPort } from 'src/core/application/notification/po
 import { Notification } from 'src/core/domain/notification/notification.entity';
 import { PgDatabaseService } from '../database/pg-database.service';
 
-
 @Injectable()
 export class PgNotificationRepository implements NotificationRepositoryPort {
     constructor(private pg: PgDatabaseService) { }
