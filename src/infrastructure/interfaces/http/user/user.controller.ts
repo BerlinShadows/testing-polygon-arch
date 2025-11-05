@@ -7,6 +7,9 @@ import {
     Put,
     Delete,
     NotFoundException,
+    ParseIntPipe,
+    DefaultValuePipe,
+    Query,
 } from '@nestjs/common';
 
 import { CreateUserUseCase } from 'src/core/application/user/use-cases/create-user.use-case';
@@ -22,7 +25,7 @@ export class UserController {
         private readonly getUserUseCase: GetUserUseCase,
         private readonly updateUserUseCase: UpdateUserUseCase,
         private readonly deleteUserUseCase: DeleteUserUseCase,
-        private readonly listUsersCase: ListUsersUseCase,
+        private readonly listUsersUseCase: ListUsersUseCase,
     ) { }
 
     @Post()
@@ -68,7 +71,19 @@ export class UserController {
     }
 
     @Get()
-    async findAll() {
-        return this.listUsersCase.execute();
+    async findAll(
+        @Query() query: { page?: string; limit?: string; email?: string; isActive?: string },
+    ) {
+        const options = {
+            page: parseInt(query.page || '1', 10),
+            limit: parseInt(query.limit || '10', 10),
+        };
+
+        const filters = {
+            email: query.email,
+            isActive: query.isActive === 'true' ? true : query.isActive === 'false' ? false : undefined,
+        };
+
+        return this.listUsersUseCase.execute(options, filters);
     }
 }

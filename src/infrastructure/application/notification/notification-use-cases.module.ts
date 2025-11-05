@@ -1,21 +1,18 @@
 import { Module } from '@nestjs/common';
 
 import { SendNotificationUseCase } from 'src/core/application/notification/use-cases/send-notification.use-case';
-// import { NotificationRepositoryPort } from 'src/core/application/notification/ports/notification.repository.port';
 import { ConsoleNotificationChannel } from 'src/infrastructure/channels/console-notification.channel';
 import { LogAuditEventUseCase } from 'src/core/application/audit/use-cases/log-audit-event.use-case';
 import { LoggingService } from 'src/core/application/logging/services/logging.service';
 import { WebsocketModule } from 'src/infrastructure/interfaces/websocket/websocket.module';
 import { WebSocketNotificationChannel } from 'src/infrastructure/interfaces/websocket/websocket-notification.channel';
+import { CoreModule } from 'src/core/core.module';
+import { DatabaseModule } from 'src/infrastructure/persistence/database/database.module';
 
 @Module({
-    imports: [WebsocketModule],
+    imports: [CoreModule, WebsocketModule, DatabaseModule],
     providers: [
         SendNotificationUseCase,
-        // {
-        //   provide: NotificationRepositoryPort,
-        //   useClass: Pg,
-        // },
         {
             provide: 'NotificationChannels',
             useFactory: (wsChannel: WebSocketNotificationChannel) => [

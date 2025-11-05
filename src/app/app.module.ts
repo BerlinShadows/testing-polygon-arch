@@ -9,13 +9,14 @@ import { HttpModule } from 'src/infrastructure/interfaces/http/http.module';
 
 @Module({
     imports: [
+        //
         CoreModule,
-
+        //
         ConfigModule,
-
+        //
         DatabaseModule,
         WebsocketModule,
-
+        //
         GraphqlModule,
         HttpModule,
     ],

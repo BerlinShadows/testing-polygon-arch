@@ -3,14 +3,58 @@ import { Injectable } from '@nestjs/common';
 import { PgDatabaseService } from '../database/pg-database.service';
 import { UserRepositoryPort } from 'src/core/application/user/ports/user.repository.port';
 import { User } from 'src/core/domain/user/user.entity';
+import { PaginatedResult, PaginationOptions } from 'src/shared/types/pagination.types';
+import { UserFilters } from 'src/core/domain/user/user.filters';
 
 @Injectable()
 export class PgUserRepository implements UserRepositoryPort {
     constructor(private pg: PgDatabaseService) { }
 
-    async findAll(): Promise<User[]> {
-        const result = await this.pg.getPool().query('SELECT * FROM users ORDER BY created_at DESC');
-        return result.rows.map(row => this.mapRowToUser(row));
+    async findAll(options: PaginationOptions, filters: UserFilters = {}): Promise<PaginatedResult<User>> {
+        const { page, limit } = options;
+        const offset = (page - 1) * limit;
+
+        let query = 'SELECT * FROM users WHERE 1=1';
+        let params: any[] = [];
+
+        if (filters.email) {
+            query += ' AND email ILIKE $' + (params.length + 1);
+            params.push(`%${filters.email}%`);
+        }
+
+        if (filters.isActive !== undefined) {
+            query += ' AND is_active = $' + (params.length + 1);
+            params.push(filters.isActive);
+        }
+
+        query += ' ORDER BY created_at DESC LIMIT $' + (params.length + 1) + ' OFFSET $' + (params.length + 2);
+        params.push(limit, offset);
+
+        let countQuery = 'SELECT COUNT(*) FROM users WHERE 1=1';
+        let countParams: any[] = [];
+
+        if (filters.email) {
+            countQuery += ' AND email ILIKE $' + (countParams.length + 1);
+            countParams.push(`%${filters.email}%`);
+        }
+
+        if (filters.isActive !== undefined) {
+            countQuery += ' AND is_active = $' + (countParams.length + 1);
+            countParams.push(filters.isActive);
+        }
+
+        const countResult = await this.pg.getPool().query(countQuery, countParams);
+        const total = parseInt(countResult.rows[0].count, 10);
+
+        const result = await this.pg.getPool().query(query, params);
+
+        return {
+            data: result.rows.map(row => this.mapRowToUser(row)),
+            total,
+            page,
+            limit,
+            totalPages: Math.ceil(total / limit),
+        };
     }
 
     async create(user: User): Promise<User> {
