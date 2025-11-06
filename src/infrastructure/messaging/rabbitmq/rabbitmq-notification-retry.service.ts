@@ -5,16 +5,21 @@ import { NotificationRetryServicePort } from 'src/core/application/notification/
 import { Notification } from 'src/core/domain/notification/notification.entity';
 
 @Injectable()
-export class RabbitMQNotificationRetryService implements NotificationRetryServicePort {
-    private readonly retryQueue = 'notification-retry';
+export class RabbitMQNotificationRetryService
+  implements NotificationRetryServicePort
+{
+  private readonly retryQueue = 'notification-retry';
 
-    constructor(private readonly rabbitMQ: RabbitMQAdapter) { }
+  constructor(private readonly rabbitMQ: RabbitMQAdapter) {}
 
-    async scheduleRetry(notification: Notification, delay: number): Promise<void> {
-        setTimeout(async () => {
-            await this.rabbitMQ.publish(this.retryQueue, {
-                ...notification,
-            });
-        }, delay);
-    }
+  async scheduleRetry(
+    notification: Notification,
+    delay: number,
+  ): Promise<void> {
+    setTimeout(async () => {
+      await this.rabbitMQ.publish(this.retryQueue, {
+        ...notification,
+      });
+    }, delay);
+  }
 }

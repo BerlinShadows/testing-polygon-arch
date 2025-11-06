@@ -15,41 +15,44 @@ import { NotificationRetryRepositoryPort } from 'src/core/application/notificati
 import { NotificationRetryServicePort } from 'src/core/application/notification/ports/notification-retry-service.port';
 
 @Module({
-    imports: [
-        WebsocketModule,
-        DatabaseModule,
-        AuditUseCasesModule,
-        LoggingModule,
-    ],
-    providers: [
-        {
-            provide: 'NotificationChannels',
-            useFactory: (wsChannel: WebSocketNotificationChannel) => [wsChannel],
-            inject: [WebSocketNotificationChannel],
-        },
-        {
-            provide: RetryNotificationUseCase,
-            useFactory: (repo: NotificationRetryRepositoryPort, service: NotificationRetryServicePort) => new RetryNotificationUseCase(repo, service),
-            inject: [NotificationRetryRepositoryPort],
-        },
-        {
-            provide: SendNotificationUseCase,
-            useFactory: (
-                repo: NotificationRepositoryPort,
-                channels: NotificationChannel[],
-                audit: LogAuditEventUseCase,
-                logger: LoggingService,
-                retry: RetryNotificationUseCase,
-            ) => new SendNotificationUseCase(repo, channels, audit, logger, retry),
-            inject: [
-                NotificationRepositoryPort,
-                'NotificationChannels',
-                LogAuditEventUseCase,
-                LoggingService,
-                RetryNotificationUseCase
-            ],
-        },
-    ],
-    exports: [SendNotificationUseCase],
+  imports: [
+    WebsocketModule,
+    DatabaseModule,
+    AuditUseCasesModule,
+    LoggingModule,
+  ],
+  providers: [
+    {
+      provide: 'NotificationChannels',
+      useFactory: (wsChannel: WebSocketNotificationChannel) => [wsChannel],
+      inject: [WebSocketNotificationChannel],
+    },
+    {
+      provide: RetryNotificationUseCase,
+      useFactory: (
+        repo: NotificationRetryRepositoryPort,
+        service: NotificationRetryServicePort,
+      ) => new RetryNotificationUseCase(repo, service),
+      inject: [NotificationRetryRepositoryPort],
+    },
+    {
+      provide: SendNotificationUseCase,
+      useFactory: (
+        repo: NotificationRepositoryPort,
+        channels: NotificationChannel[],
+        audit: LogAuditEventUseCase,
+        logger: LoggingService,
+        retry: RetryNotificationUseCase,
+      ) => new SendNotificationUseCase(repo, channels, audit, logger, retry),
+      inject: [
+        NotificationRepositoryPort,
+        'NotificationChannels',
+        LogAuditEventUseCase,
+        LoggingService,
+        RetryNotificationUseCase,
+      ],
+    },
+  ],
+  exports: [SendNotificationUseCase],
 })
-export class NotificationUseCasesModule { }
+export class NotificationUseCasesModule {}

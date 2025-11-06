@@ -7,4 +7,4 @@ import { RabbitMQConfigService } from './messaging-config.service';
   providers: [RabbitMQConfigService],
   exports: [RabbitMQConfigService],
 })
-export class RabbitMQConfigModule { }
+export class RabbitMQConfigModule {}

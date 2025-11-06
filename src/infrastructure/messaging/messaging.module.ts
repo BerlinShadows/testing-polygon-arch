@@ -6,14 +6,14 @@ import { SendMessageUseCase } from 'src/core/application/messaging/use-cases/sen
 import { RabbitMQConfigModule } from '../config/messaging-config/messaging-config.module';
 
 @Module({
-    imports: [RabbitMQConfigModule],
-    providers: [
-        {
-            provide: MessageBrokerPort,
-            useClass: RabbitMQAdapter,
-        },
-        SendMessageUseCase,
-    ],
-    exports: [SendMessageUseCase],
+  imports: [RabbitMQConfigModule],
+  providers: [
+    {
+      provide: MessageBrokerPort,
+      useClass: RabbitMQAdapter,
+    },
+    SendMessageUseCase,
+  ],
+  exports: [SendMessageUseCase],
 })
-export class MessagingModule { }
+export class MessagingModule {}

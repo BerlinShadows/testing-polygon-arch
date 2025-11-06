@@ -13,8 +13,8 @@ export class CreateUserUseCase {
     private readonly userRepository: UserRepositoryPort,
     private readonly roleRepository: RoleRepositoryPort,
     private readonly sendNotificationUseCase: SendNotificationUseCase,
-    private readonly sendMessageUseCase: SendMessageUseCase,
-  ) { }
+    // private readonly sendMessageUseCase: SendMessageUseCase,
+  ) {}
 
   async execute(email: string, name: string, roles: string[]): Promise<User> {
     const existing = await this.userRepository.findByEmail(email);
@@ -56,7 +56,7 @@ export class CreateUserUseCase {
       eventType: 'notification_created',
     };
 
-    await this.sendMessageUseCase.execute('notifications', message);
+    // await this.sendMessageUseCase.execute('notifications', message);
 
     return savedUser;
   }

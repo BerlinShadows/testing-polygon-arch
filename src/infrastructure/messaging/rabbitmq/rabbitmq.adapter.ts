@@ -4,17 +4,19 @@ import { MessageBrokerPort } from 'src/core/application/messaging/ports/message-
 import { RabbitMQConfigService } from 'src/infrastructure/config/messaging-config/messaging-config.service';
 
 @Injectable()
-export class RabbitMQAdapter implements MessageBrokerPort, OnModuleInit, OnModuleDestroy {
+export class RabbitMQAdapter
+  implements MessageBrokerPort, OnModuleInit, OnModuleDestroy
+{
   private connection: ChannelModel;
   private channel: Channel;
   private queue: string;
 
-  constructor(private readonly configService: RabbitMQConfigService) { }
+  constructor(private readonly configService: RabbitMQConfigService) {}
 
   async onModuleInit() {
     const connectionString = this.configService.getConnectionString();
     this.queue = this.configService.get().queue;
-    
+
     this.connection = await connect(connectionString);
     this.channel = await this.connection.createChannel();
     await this.channel.assertQueue(this.queue, { durable: true });

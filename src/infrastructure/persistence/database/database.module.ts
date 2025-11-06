@@ -15,36 +15,36 @@ import { PgNotificationRetryRepository } from '../postgres/pg-notification-retry
 
 @Global()
 @Module({
-    imports: [DatabaseConfigModule],
-    providers: [
-        PgDatabaseService,
-        {
-            provide: UserRepositoryPort,
-            useClass: PgUserRepository,
-        },
-        {
-            provide: RoleRepositoryPort,
-            useClass: PgRoleRepository,
-        },
-        {
-            provide: NotificationRepositoryPort,
-            useClass: PgNotificationRepository,
-        },
-        {
-            provide: AuditRepositoryPort,
-            useClass: PgAuditRepository,
-        },
-        {
-            provide: NotificationRetryRepositoryPort,
-            useClass: PgNotificationRetryRepository,
-        },
-    ],
-    exports: [
-        UserRepositoryPort,
-        RoleRepositoryPort,
-        NotificationRepositoryPort,
-        AuditRepositoryPort,
-        NotificationRetryRepositoryPort,
-    ],
+  imports: [DatabaseConfigModule],
+  providers: [
+    PgDatabaseService,
+    {
+      provide: UserRepositoryPort,
+      useClass: PgUserRepository,
+    },
+    {
+      provide: RoleRepositoryPort,
+      useClass: PgRoleRepository,
+    },
+    {
+      provide: NotificationRepositoryPort,
+      useClass: PgNotificationRepository,
+    },
+    {
+      provide: AuditRepositoryPort,
+      useClass: PgAuditRepository,
+    },
+    {
+      provide: NotificationRetryRepositoryPort,
+      useClass: PgNotificationRetryRepository,
+    },
+  ],
+  exports: [
+    UserRepositoryPort,
+    RoleRepositoryPort,
+    NotificationRepositoryPort,
+    AuditRepositoryPort,
+    NotificationRetryRepositoryPort,
+  ],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}
