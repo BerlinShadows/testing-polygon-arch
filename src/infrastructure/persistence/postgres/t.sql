@@ -67,14 +67,14 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS scenario_instances (
+    scenario_instances (
         id TEXT PRIMARY KEY,
         template_id TEXT NOT NULL REFERENCES scenario_templates (id) ON DELETE CASCADE,
         template_version INTEGER NOT NULL,
         status TEXT NOT NULL,
-        input_parameters JSONB NOT NULL,
+        input_parameters JSONB NOT NULL DEFAULT '{}',
         current_step_id TEXT,
-        step_results JSONB NOT NULL,
+        step_results JSONB NOT NULL DEFAULT '{}',
         started_at TIMESTAMP NOT NULL,
         completed_at TIMESTAMP,
         paused_at TIMESTAMP,

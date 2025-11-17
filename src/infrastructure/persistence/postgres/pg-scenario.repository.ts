@@ -54,11 +54,37 @@ export class PgScenarioRepository implements AbstractScenarioRepositoryPort {
   }
 
   async saveInstance(instance: any): Promise<void> {
-    throw new Error('Not implemented');
+    const query = `
+    INSERT INTO scenario_instances (
+      id, template_id, template_version, status, input_parameters,
+      current_step_id, step_results, started_at, completed_at, paused_at,
+      created_at, updated_at
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW());
+  `;
+    const values = [
+      instance.id,
+      instance.templateId,
+      instance.templateVersion,
+      instance.status,
+      JSON.stringify(instance.inputParameters),
+      instance.currentStepId,
+      JSON.stringify(instance.stepResults),
+      instance.startedAt,
+      instance.completedAt,
+      instance.pausedAt,
+    ];
+    await this.pg.getPool().query(query, values);
   }
 
   async findInstanceById(id: string): Promise<any | null> {
-    throw new Error('Not implemented');
+    const query = `
+    SELECT id, template_id, template_version, status, input_parameters,
+           current_step_id, step_results, started_at, completed_at, paused_at
+    FROM scenario_instances
+    WHERE id = $1;
+  `;
+    const result = await this.pg.getPool().query(query, [id]);
+    return result.rows.length ? result.rows[0] : null;
   }
 
   async updateInstanceStepResult(
@@ -71,11 +97,21 @@ export class PgScenarioRepository implements AbstractScenarioRepositoryPort {
   }
 
   async pauseInstance(instanceId: string): Promise<void> {
-    throw new Error('Not implemented');
+    const query = `
+    UPDATE scenario_instances
+    SET status = 'paused', paused_at = NOW(), updated_at = NOW()
+    WHERE id = $1;
+  `;
+    await this.pg.getPool().query(query, [instanceId]);
   }
 
   async resumeInstance(instanceId: string): Promise<void> {
-    throw new Error('Not implemented');
+    const query = `
+    UPDATE scenario_instances
+    SET status = 'running', paused_at = NOW(), updated_at = NOW()
+    WHERE id = $1;
+  `;
+    await this.pg.getPool().query(query, [instanceId]);
   }
 
   private mapRowToScenarioTemplate(row: any): ScenarioTemplate {

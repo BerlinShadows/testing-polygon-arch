@@ -58,3 +58,27 @@ export interface StepExecution {
     output?: unknown;
     error?: string;
 }
+
+export interface CreateScenarioTemplateDto {
+    id?: string;
+    name: string;
+    description?: string;
+    version?: number;
+    parameters: Array<{
+        name: string;
+        type: 'string' | 'number' | 'boolean' | 'json';
+        required: boolean;
+        defaultValue?: any;
+    }>;
+    steps: Array<{
+        id?: string;
+        name: string;
+        actionType: string;
+        payload: unknown;
+        delayMs?: number;
+        timeoutMs?: number;
+        onSuccessGoTo?: string;
+        onFailureGoTo?: string;
+        maxRetries?: number;
+    }>;
+}
