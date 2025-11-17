@@ -15,9 +15,8 @@ import { LoggingService } from 'src/core/application/logging/services/logging.se
   },
 })
 export class NotificationGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
-  constructor(private readonly logger: LoggingService) {}
+  implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private readonly logger: LoggingService) { }
   @WebSocketServer()
   server: Server;
 

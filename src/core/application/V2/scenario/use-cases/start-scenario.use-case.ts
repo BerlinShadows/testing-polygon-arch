@@ -1,7 +1,7 @@
-import { ScenarioRepositoryPort } from "src/core/domain/V2/scenario/ports/scenario.repository.port";
+import { AbstractScenarioRepositoryPort } from "src/core/domain/V2/scenario/ports/abstract-scenario-repository.port";
 
 export class StartScenarioUseCase {
-    constructor(private readonly repo: ScenarioRepositoryPort) { }
+    constructor(private readonly repo: AbstractScenarioRepositoryPort) { }
 
     async execute(
         templateId: string,

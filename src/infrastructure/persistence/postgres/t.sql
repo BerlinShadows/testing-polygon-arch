@@ -53,3 +53,41 @@ CREATE INDEX IF NOT EXISTS idx_audit_provider ON audit_events (provider_id);
 CREATE INDEX IF NOT EXISTS idx_audit_event_type ON audit_events (event_type);
 
 CREATE INDEX IF NOT EXISTS idx_audit_created_at ON audit_events (created_at);
+
+CREATE TABLE
+    IF NOT EXISTS scenario_templates (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        version INTEGER NOT NULL DEFAULT 1,
+        parameters JSONB NOT NULL,
+        steps JSONB NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW (),
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW ()
+    );
+
+CREATE TABLE
+    IF NOT EXISTS scenario_instances (
+        id TEXT PRIMARY KEY,
+        template_id TEXT NOT NULL REFERENCES scenario_templates (id) ON DELETE CASCADE,
+        template_version INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        input_parameters JSONB NOT NULL,
+        current_step_id TEXT,
+        step_results JSONB NOT NULL,
+        started_at TIMESTAMP NOT NULL,
+        completed_at TIMESTAMP,
+        paused_at TIMESTAMP,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW (),
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW ()
+    );
+
+CREATE INDEX IF NOT EXISTS idx_scenario_instances_template_id ON scenario_instances (template_id);
+
+CREATE INDEX IF NOT EXISTS idx_scenario_instances_status ON scenario_instances (status);
+
+CREATE INDEX IF NOT EXISTS idx_scenario_instances_current_step ON scenario_instances (current_step_id);
+
+DROP TABLE IF EXISTS scenario_instances;
+
+DROP TABLE IF EXISTS scenario_templates;

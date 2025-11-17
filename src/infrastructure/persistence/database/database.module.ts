@@ -12,6 +12,8 @@ import { AuditRepositoryPort } from 'src/core/application/audit/ports/audit-repo
 import { PgAuditRepository } from '../postgres/pg-audit.repository';
 import { NotificationRetryRepositoryPort } from 'src/core/application/notification/ports/notification-retry-repository.port';
 import { PgNotificationRetryRepository } from '../postgres/pg-notification-retry.repository';
+import { AbstractScenarioRepositoryPort } from 'src/core/domain/V2/scenario/ports/abstract-scenario-repository.port';
+import { PgScenarioRepository } from '../postgres/pg-scenario.repository';
 
 @Global()
 @Module({
@@ -38,6 +40,10 @@ import { PgNotificationRetryRepository } from '../postgres/pg-notification-retry
       provide: NotificationRetryRepositoryPort,
       useClass: PgNotificationRetryRepository,
     },
+    {
+      provide: AbstractScenarioRepositoryPort,
+      useClass: PgScenarioRepository,
+    },
   ],
   exports: [
     UserRepositoryPort,
@@ -45,6 +51,7 @@ import { PgNotificationRetryRepository } from '../postgres/pg-notification-retry
     NotificationRepositoryPort,
     AuditRepositoryPort,
     NotificationRetryRepositoryPort,
+    AbstractScenarioRepositoryPort,
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

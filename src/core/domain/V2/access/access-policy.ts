@@ -1,12 +1,9 @@
-import { AccessContextManager } from "./access-context";
-
-export type ResourceType = 'scenario' | 'user' | 'document' | string;
-export type Action = 'read' | 'write' | 'execute' | 'delete' | string;
+import { AccessContextManager } from './access-context';
 
 export function checkPermission(
-    resourceType: ResourceType,
-    resourceId: string | null,
-    action: Action
+    resourceType: string,
+    resourceId: string,
+    action: string
 ): boolean {
     const ctx = AccessContextManager.get();
 
@@ -16,8 +13,12 @@ export function checkPermission(
         return ctx.roles.includes('executor');
     }
 
-    if (resourceType === 'scenario' && action === 'read') {
-        return ctx.roles.includes('user') || ctx.roles.includes('executor');
+    if (resourceType === 'role' && action === 'write') {
+        return ctx.roles.includes('admin');
+    }
+
+    if (action === 'read') {
+        return true;
     }
 
     return false;

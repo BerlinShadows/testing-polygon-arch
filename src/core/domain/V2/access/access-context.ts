@@ -1,7 +1,6 @@
 export interface AccessContext {
     userId: string;
     roles: string[];
-    scopes: string[];
 }
 
 let currentContext: AccessContext | null = null;
@@ -11,7 +10,7 @@ export const AccessContextManager = {
         currentContext = ctx;
     },
     get(): AccessContext {
-        if (!currentContext) throw new Error('ACCESS_CONTEXT_REQUIRED');
+        if (!currentContext) throw new Error('ACCESS_CONTEXT_NOT_SET');
         return currentContext;
     },
     clear(): void {
