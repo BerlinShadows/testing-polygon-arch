@@ -20,7 +20,7 @@ export class StartScenarioUseCase {
             templateId: template.id,
             templateVersion: template.version,
             status: 'pending' as const,
-            inputParameters,
+            inputParameters: inputParameters || {},
             currentStepId: template.steps[0]?.id || null,
             stepResults: {},
             startedAt: new Date(),
