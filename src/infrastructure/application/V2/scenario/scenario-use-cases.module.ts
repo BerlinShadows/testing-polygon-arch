@@ -67,4 +67,4 @@ import { DatabaseModule } from 'src/infrastructure/persistence/database/database
         PauseScenarioUseCase,
     ]
 })
-export class ScenarioUseCasesModule { } // 07090b36-d33e-4b9e-9046-a77dfeeb49e3
+export class ScenarioUseCasesModule { } 
